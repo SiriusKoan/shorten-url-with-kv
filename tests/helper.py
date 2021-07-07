@@ -25,17 +25,21 @@ class TestModel(unittest.TestCase):
 
     def admin_login(self):
         return self.client.post(url_for("user.login_page"), data=self.admin_data)
+    
+    def login(self, login):
+        if login == "user":
+            self.user_login()
+        if login == "admin":
+            self.admin_login()
 
     def get(self, login=False):
-        if login:
-            self.login()
-        res = self.client.get(self.route)
+        self.login(login)
+        res = self.client.get(self.route, follow_redirects=True)
         return res
 
     def post(self, login=False, data=None):
-        if login:
-            self.login()
-        res = self.client.post(self.route, data=data)
+        self.login(login)
+        res = self.client.post(self.route, data=data, follow_redirects=True)
         return res
 
 

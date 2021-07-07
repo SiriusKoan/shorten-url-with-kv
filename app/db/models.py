@@ -13,7 +13,7 @@ class Users(db.Model):
     email = db.Column(db.String, unique=True, nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
     verify_code = db.Column(db.String, unique=True, nullable=True)  # for futurn use
-    api_key = db.Column(db.String, unique=True, nullable=False)
+    api_key = db.Column(db.String, unique=True)
     urls = db.relationship("urls")
     register_time = db.Column(
         db.DateTime, default=datetime.datetime.now, nullable=False
