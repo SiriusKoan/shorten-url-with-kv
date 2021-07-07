@@ -10,7 +10,7 @@ def dashboard_page():
         pass
 
 
-@admin_bp.route("manage_user", methods=["GET", "POST"])
+@admin_bp.route("/manage_user", methods=["GET", "POST"])
 def manage_user_page():
     if request.method == "GET":
         pass

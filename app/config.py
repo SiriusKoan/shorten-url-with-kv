@@ -3,17 +3,26 @@ from os import urandom
 
 class Config:
     SECRET_KEY = "cyt8745ynt98x34"
+    # SQLAlchemy
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
 class DevelopmentConfig(Config):
-    pass
+    ENV = "development"
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = "sqlite:///data.db"
 
 
 class TestingConfig(Config):
-    pass
+    ENV = "testing"
+    TESTING = True
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = "sqlite:///data_testing.db"
+    WTF_CSRF_ENABLED = False
 
 
 class ProductionConfig(Config):
+    ENV = "production"
     SECRET_KEY = urandom(24)
 
 

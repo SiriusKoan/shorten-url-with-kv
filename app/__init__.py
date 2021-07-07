@@ -1,15 +1,15 @@
-from flask_login import LoginManager
 from flask import Flask
 from .config import configs
-
-login_manager = LoginManager()
+from .db import db
+from .user_helper import login_manager
 
 
 def create_app(env):
     app = Flask(__name__, template_folder="../templates", static_folder="../static")
     app.config.from_object(configs[env])
 
-    login_manager.init(app)
+    login_manager.init_app(app)
+    db.init_app(app)
 
     from .main import main_bp
 
@@ -22,3 +22,5 @@ def create_app(env):
     from .user import user_bp
 
     app.register_blueprint(user_bp)
+
+    return app

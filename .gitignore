@@ -2,3 +2,5 @@
 .venv
 .vscode
 __pycache__
+data.db
+data_testing.db
