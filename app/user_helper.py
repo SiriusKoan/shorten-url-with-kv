@@ -59,9 +59,6 @@ login_manager = LoginManager_()
 
 @login_manager.user_loader
 def load(user_id):
-    user = User()
-    user.id = user_id
-    return user
     user_id = int(user_id)
     user = Users.query.filter_by(id=user_id).first()
     if user and user.is_valid:

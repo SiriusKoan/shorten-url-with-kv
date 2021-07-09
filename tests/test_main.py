@@ -18,16 +18,10 @@ class IndexPageTest(TestModel):
         self.assertIn(b"Login", res.data)
         self.assertIn(b"Register", res.data)
 
-    def test_get_with_user_auth(self):
+    def test_get_with_auth(self):
         res = self.get(login="user")
         self.assertEqual(res.status_code, 200)
         self.assertIn(b"Dashboard", res.data)
-
-    def test_get_with_admin_auth(self):
-        res = self.get(login="admin")
-        self.assertEqual(res.status_code, 200)
-        self.assertIn(b"Dashboard", res.data)
-        self.assertIn(b"Admin dashboard", res.data)
 
     def test_post_ok(self):
         res = self.post(data=self.url_ok)

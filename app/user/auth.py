@@ -19,11 +19,11 @@ def login_page():
 @user_bp.route("/register", methods=["GET", "POST"])
 def register_page():
     if request.method == "GET":
-        pass
+        return ""
     if request.method == "POST":
-        pass
+        return ""
 
 
 @user_bp.route("/logout", methods=["GET"])
 def logout_page():
-    pass
+    return ""
