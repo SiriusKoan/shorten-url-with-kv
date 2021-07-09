@@ -15,4 +15,13 @@ def manage_user_page():
     if request.method == "GET":
         pass
     if request.method == "POST":
+        # add user
+        pass
+
+
+@admin_bp.route("/manage_user_backend", methods=["UPDATE", "DELETE"])
+def manage_user_backend():
+    if request.method == "UPDATE":
+        pass
+    if request.method == "DELETE":
         pass
