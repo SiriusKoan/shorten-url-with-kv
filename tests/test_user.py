@@ -104,8 +104,52 @@ class DashboardPageTest(TestModel):
         super().setUp()
         self.route = url_for("user.dashboard_page")
 
+    def test_get_with_no_auth(self):
+        res = self.get()
+        self.assertEqual(res.status_code, 200)
+        self.assertIn(b"Login", res.data)
+
+    def test_get_with_auth(self):
+        res = self.get(login="user")
+        self.assertEqual(res.status_code, 200)
+        self.assertIn(b"Dashboard", res.data)
+
 
 class SettingPageTest(TestModel):
     def setUp(self) -> None:
         super().setUp()
         self.route = url_for("user.setting_page")
+        self.data_ok = {"email": "user@a.a"}
+        self.data_bad_too_short_password = {"email": "user@a.a", "password": "short"}
+        self.data_bad_empty_field = {}
+        self.data_bad_duplicate_email = {"email": "user@user.com"}
+
+    def test_get_with_no_auth(self):
+        res = self.get()
+        self.assertEqual(res.status_code, 200)
+        self.assertIn(b"Login", res.data)
+
+    def test_get_with_auth(self):
+        res = self.get(login="user")
+        self.assertEqual(res.status_code, 200)
+        self.assertIn(b"Setting", res.data)
+
+    def test_post_ok(self):
+        res = self.post(login="user", data=self.data_ok)
+        self.assertEqual(res.status_code, 200)
+        self.assertIn(b"OK.", res.data)
+
+    def test_post_bad_too_short_password(self):
+        res = self.post(login="user", data=self.data_bad_too_short_password)
+        self.assertEqual(res.status_code, 200)
+        self.assertIn(b"The password must contain at least 6 characters.", res.data)
+
+    def test_post_bad_empty_field(self):
+        res = self.post(login="user", data=self.data_bad_empty_field)
+        self.assertEqual(res.status_code, 200)
+        self.assertIn(b"The field is required.", res.data)
+
+    def test_post_bad_duplicate_email(self):
+        res = self.post(login="user", data=self.data_bad_duplicate_email)
+        self.assertEqual(res.status_code, 200)
+        self.assertIn(b"The email has been used.", res.data)
