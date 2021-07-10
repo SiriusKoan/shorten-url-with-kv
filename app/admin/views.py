@@ -5,23 +5,23 @@ from . import admin_bp
 @admin_bp.route("/admin_dashboard", methods=["GET", "POST"])
 def dashboard_page():
     if request.method == "GET":
-        pass
+        return ""
     if request.method == "POST":
-        pass
+        return ""
 
 
 @admin_bp.route("/manage_user", methods=["GET", "POST"])
 def manage_user_page():
     if request.method == "GET":
-        pass
+        return ""
     if request.method == "POST":
         # add user
-        pass
+        return ""
 
 
-@admin_bp.route("/manage_user_backend", methods=["UPDATE", "DELETE"])
+@admin_bp.route("/manage_user_backend", methods=["PATCH", "DELETE"])
 def manage_user_backend():
-    if request.method == "UPDATE":
-        pass
+    if request.method == "PATCH":
+        return ""
     if request.method == "DELETE":
-        pass
+        return ""

@@ -94,4 +94,67 @@ class ManageUserBackend(TestModel):
     def setUp(self) -> None:
         super().setUp()
         self.route = url_for("admin.manage_user_backend")
+        self.patch_data_ok = {"id": "1", "email": "user2@a.a"}
+        self.patch_data_bad_duplicate_email = {"id": "2", "email": "user@user.com"}
+        self.patch_data_bad_duplicate_username = {"id": "2", "username": "user"}
+        self.patch_data_bad_too_short_password = {"id": "1", "password": "short"}
+        self.patch_data_bad_user_not_exists = {"id": "10", "username": "user10"}
+        self.patch_data_incomplete = {"username": "user2"}
+        self.delete_data_ok = {"id": "1"}
+        self.delete_data_bad_user_not_exists = {"id": "10"}
+        self.delete_data_incomplete = {}
 
+    def patch(self, data=None):
+        self.login("admin")
+        res = self.client.patch(self.route, data=data, follow_redirects=True)
+        return res
+
+    def delete(self, data=None):
+        self.login("admin")
+        res = self.client.delete(self.route, data=data, follow_redirects=True)
+        return res
+
+    def test_patch_ok(self):
+        res = self.patch(self.patch_data_ok)
+        self.assertEqual(res.status_code, 200)
+        self.assertIn(b"T;OK.", res.data)
+
+    def test_patch_bad_duplicate_email(self):
+        res = self.patch(self.patch_data_bad_duplicate_email)
+        self.assertEqual(res.status_code, 400)
+        self.assertIn(b"F;The email has been used.", res.data)
+
+    def test_patch_bad_duplicate_username(self):
+        res = self.patch(self.patch_data_bad_duplicate_username)
+        self.assertEqual(res.status_code, 400)
+        self.assertIn(b"F;The username has been used.", res.data)
+
+    def test_patch_bad_too_short_password(self):
+        res = self.patch(self.patch_data_bad_too_short_password)
+        self.assertEqual(res.status_code, 400)
+        self.assertIn(b"F;The password must contain at least 6 characters.", res.data)
+
+    def test_patch_bad_user_not_exists(self):
+        res = self.patch(self.patch_data_bad_user_not_exists)
+        self.assertEqual(res.status_code, 400)
+        self.assertIn(b"F;The user does not exist.", res.data)
+
+    def test_patch_bad_incomplete(self):
+        res = self.patch(self.patch_data_incomplete)
+        self.assertEqual(res.status_code, 400)
+        self.assertIn(b"F;Incomplete information.", res.data)
+
+    def test_delete_ok(self):
+        res = self.delete(self.delete_data_ok)
+        self.assertEqual(res.status_code, 200)
+        self.assertIn(b"T;OK.", res.data)
+
+    def test_delete_bad_user_not_exists(self):
+        res = self.delete(self.delete_data_bad_user_not_exists)
+        self.assertEqual(res.status_code, 400)
+        self.assertIn(b"F;The user does not exist.")
+
+    def test_delete_bad_incomplete(self):
+        res = self.delete(self.delete_data_incomplete)
+        self.assertEqual(res.status_code, 400)
+        self.assertIn(b"F;Incomplete information.", res.data)
