@@ -1,13 +1,14 @@
 import hashlib
 import datetime
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
 
 class Users(db.Model):
     __tablename__ = "users"
-    ID = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
@@ -19,21 +20,20 @@ class Users(db.Model):
         db.DateTime, default=datetime.datetime.now, nullable=False
     )
 
-    @staticmethod
-    def hash(s):
-        return hashlib.sha256(s.encode("utf-8")).hexdigest()
-
     def __init__(self, username, password, email, is_admin=False) -> None:
         self.username = username
-        self.password = hash(password)
+        self.password = generate_password_hash(password)
         self.email = email
         self.is_admin = is_admin
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
 
 class urls(db.Model):
     __tablename__ = "urls"
-    ID = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.ID"), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     old = db.Column(db.String, nullable=False)
     new = db.Column(db.String, nullable=False, unique=True)
     use = db.Column(db.Integer, nullable=False, default=0)

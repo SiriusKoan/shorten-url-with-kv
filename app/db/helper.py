@@ -1,5 +1,7 @@
+from hashlib import sha256
 from . import db
 from .models import Users, urls
+from ..user_helper import User
 
 
 def db_init():
@@ -28,3 +30,12 @@ def add_short_url(user_id, old, new):
         db.session.add(url)
         db.session.commit()
         return True
+
+
+def login_auth(username, password):
+    if user := Users.query.filter_by(username=username).first():
+        if user.check_password(password):
+            sessionUser = User()
+            sessionUser.id = user.id
+            return sessionUser
+    return False

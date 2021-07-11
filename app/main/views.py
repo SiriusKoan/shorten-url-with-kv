@@ -1,7 +1,6 @@
 from flask import request, render_template, redirect, url_for, flash, abort
 from flask_login import current_user
 from . import main_bp
-from ..db import db
 from ..db.helper import add_short_url, db_init, get_redirect_url
 from ..forms import ShortUrlForm
 
@@ -13,7 +12,6 @@ def database_init():
 
 @main_bp.route("/", methods=["GET", "POST"])
 def index_page():
-    flash("test")
     form = ShortUrlForm()
     if request.method == "GET":
         return render_template("index.html", form=form)

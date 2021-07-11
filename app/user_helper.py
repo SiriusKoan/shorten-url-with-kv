@@ -61,7 +61,7 @@ login_manager = LoginManager_()
 def load(user_id):
     user_id = int(user_id)
     user = Users.query.filter_by(id=user_id).first()
-    if user and user.is_valid:
+    if user:
         sessionUser = User()
         sessionUser.id = user.id
         sessionUser.is_admin = user.is_admin
