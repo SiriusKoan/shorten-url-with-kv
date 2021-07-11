@@ -3,7 +3,7 @@ import unittest
 from flask_script import Manager
 from app import create_app
 
-app = create_app(getenv("ENV", "production"))
+app = create_app(getenv("ENV", "prod"))
 manager = Manager(app)
 
 

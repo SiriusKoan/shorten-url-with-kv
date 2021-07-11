@@ -50,8 +50,6 @@ def generate_test_data():
     # users
     user = Users("user", "user", "user@user.com")
     db.session.add(user)
-    admin = Users("admin", "admin", "admin@admin.com", is_admin=True)
-    db.session.add(admin)
 
     # urls
     url1 = urls(1, "https://google.com", "test1")

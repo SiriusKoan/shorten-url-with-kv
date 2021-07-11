@@ -1,0 +1,22 @@
+{% macro display_msg(messages) -%}
+    <script>
+        function hide(obj) {
+            obj.style.opacity = "0";
+            setTimeout(() => {
+                obj.style.display = "none";
+            }, 300);
+        }
+    </script>
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+    <div id="messages">
+    {% for category, message in messages %}
+        <div class="flash-message {{ category }}">
+            <span class="closebtn" onclick="hide(this.parentElement)">&times;</span>
+            <span>{{ message }}</span>
+        </div>
+    {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+{%- endmacro %}

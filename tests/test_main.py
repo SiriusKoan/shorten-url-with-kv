@@ -36,7 +36,7 @@ class IndexPageTest(TestModel):
     def test_post_bad_empty(self):
         res = self.post(data=self.url_bad_empty)
         self.assertEqual(res.status_code, 200)
-        self.assertIn(b"The field is required.", res.data)
+        self.assertIn(b"This field is required.", res.data)
 
 
 class RedirectPageTest(unittest.TestCase):
