@@ -38,3 +38,14 @@ def login_auth(username, password):
             sessionUser.id = user.id
             return sessionUser
     return False
+
+
+def add_user(username, password, email, is_admin=False):
+    if (not Users.query.filter_by(username=username).first()) and (
+        not Users.query.filter_by(email=email).first()
+    ):
+        user = Users(username, password, email, is_admin)
+        db.session.add(user)
+        db.session.commit()
+        return True
+    return False

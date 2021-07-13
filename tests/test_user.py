@@ -32,7 +32,7 @@ class LoginPageTest(TestModel):
     def test_post_bad_empty_field(self):
         res = self.post(data=self.user_data_bad_empty_field)
         self.assertEqual(res.status_code, 200)
-        self.assertIn(b"The field is required.", res.data)
+        self.assertIn(b"This field is required.", res.data)
 
 
 class RegisterPageTest(TestModel):
@@ -42,21 +42,25 @@ class RegisterPageTest(TestModel):
         self.register_data_ok = {
             "username": "user2",
             "password": "useruser",
+            "repeat_password": "useruser",
             "email": "user@a.a",
         }
         self.register_data_bad_username_duplicate = {
             "username": "user",
             "password": "useruser",
+            "repeat_password": "useruser",
             "email": "user@a.a",
         }
         self.register_data_bad_email_duplicate = {
             "username": "user2",
             "password": "useruser",
+            "repeat_password": "useruser",
             "email": "user@user.com",
         }
         self.register_data_bad_too_short_password = {
             "username": "user2",
             "password": "short",
+            "repeat_password": "short",
             "email": "user@a.a",
         }
         self.register_data_bad_empty_field = {
@@ -81,12 +85,12 @@ class RegisterPageTest(TestModel):
     def test_post_bad_username_duplicate(self):
         res = self.post(data=self.register_data_bad_username_duplicate)
         self.assertEqual(res.status_code, 200)
-        self.assertIn(b"The username has been used.", res.data)
+        self.assertIn(b"The username or the email has been used.", res.data)
 
     def test_post_bad_email_duplicate(self):
         res = self.post(data=self.register_data_bad_email_duplicate)
         self.assertEqual(res.status_code, 200)
-        self.assertIn(b"The email has been used.", res.data)
+        self.assertIn(b"The username or the email has been used.", res.data)
 
     def test_post_bad_too_short_password(self):
         res = self.post(data=self.register_data_bad_too_short_password)
@@ -96,7 +100,7 @@ class RegisterPageTest(TestModel):
     def test_post_bad_empty_field(self):
         res = self.post(data=self.register_data_bad_empty_field)
         self.assertEqual(res.status_code, 200)
-        self.assertIn(b"The field is required.", res.data)
+        self.assertIn(b"This field is required.", res.data)
 
 
 class DashboardPageTest(TestModel):
@@ -147,7 +151,7 @@ class SettingPageTest(TestModel):
     def test_post_bad_empty_field(self):
         res = self.post(login="user", data=self.data_bad_empty_field)
         self.assertEqual(res.status_code, 200)
-        self.assertIn(b"The field is required.", res.data)
+        self.assertIn(b"This field is required.", res.data)
 
     def test_post_bad_duplicate_email(self):
         res = self.post(login="user", data=self.data_bad_duplicate_email)

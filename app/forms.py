@@ -47,8 +47,8 @@ class RegisterForm(FlaskForm):
             DataRequired(),
             Length(min=4, max=30, message="The name should be 4 to 30 letters long."),
             Regexp(
-                "[a-zA-Z0-9_-]+",
-                message="Only letters, numbers and _- are allowed in username.",
+                "[a-zA-Z0-9_]+",
+                message="Only letters, numbers and underscore are allowed in username.",
             ),
         ],
         render_kw={"placeholder": "Username"},
@@ -57,9 +57,7 @@ class RegisterForm(FlaskForm):
         "Password",
         validators=[
             DataRequired(),
-            Length(
-                min=6, max=50, message="The password should be 6 to 50 letters long."
-            ),
+            Length(min=6, message="The password must contain at least 6 characters."),
         ],
         render_kw={"placeholder": "Password"},
     )
