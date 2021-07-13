@@ -1,0 +1,30 @@
+{% from 'msg.jinja' import display_msg %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    {% block extra_import %}
+    {% endblock %}
+</head>
+<body>
+    {{ display_msg(messages) }}
+    <nav>
+        {% if current_user.is_active %}
+        <a href="/dashboard">Dashboard</a>
+        {% if current_user.is_admin %}
+        <a href="/admin_dashboard">Admin Dashboard</a>
+        <a href="/manage_user">Manage User</a>
+        {% endif %}
+        {% else %}
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+        {% endif %}
+    </nav>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

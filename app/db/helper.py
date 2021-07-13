@@ -1,4 +1,3 @@
-from hashlib import sha256
 from . import db
 from .models import Users, urls
 from ..user_helper import User
@@ -9,7 +8,7 @@ def db_init():
     if not Users.query.filter_by(username="anonymous").first():
         user = Users("anonymous", "none", "none")
         db.session.add(user)
-    if not Users.query.filter_by(username="admin"):
+    if not Users.query.filter_by(username="admin").first():
         admin = Users("admin", "admin", "admin@admin.com", True)
         db.session.add(admin)
     db.session.commit()

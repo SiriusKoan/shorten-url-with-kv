@@ -1,34 +1,18 @@
-{% from 'msg.jinja' import display_msg %}
+{% extends "base.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shorten URL</title>
-</head>
-<body>
-    <nav>
-        {% if current_user.is_active %}
-        <a href="/dashboard">Dashboard</a>
-        {% else %}
-        <a href="/login">Login</a>
-        <a href="/register">Register</a>
-        {% endif %}
-    </nav>
-    {{ display_msg(messages) }}
-    <form action="/" method="post">
-        {{ form.csrf_token }}
-        <div class="field">
-            {{ form.old }}
-        </div>
-        <div class="field">
-            {{ form.new }}
-        </div>
-        <div class="field">
-            {{ form.submit }}
-        </div>
-    </form>
-</body>
-</html>
+{% block title %}Shorten URL{% endblock %}
+
+{% block content %}
+<form action="/" method="post">
+    {{ form.csrf_token }}
+    <div class="field">
+        {{ form.old }}
+    </div>
+    <div class="field">
+        {{ form.new }}
+    </div>
+    <div class="field">
+        {{ form.submit }}
+    </div>
+</form>
+{% endblock %}
