@@ -1,0 +1,53 @@
+#messages {
+    width: 60vw;
+    min-width: 280px;
+    position: fixed;
+    top: 40px;
+    display: block;
+    margin: 0 auto 0 auto;
+    left: 0;
+    right: 0;
+}
+
+.flash-message {
+    color: white;
+    transition: 0.3s;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 3px 2px 10px 1px rgba(0, 0, 0, 0.3);
+}
+
+.flash-message:hover {
+    box-shadow: 3px 2px 10px 1px rgba(0, 0, 0, 0.5);
+}
+
+.alert {
+    background-color: #f44336;
+}
+
+.info {
+    background-color: #2196F3;
+}
+
+.warning {
+    background-color: #ff9800;
+}
+
+.success {
+    background-color: #4CAF50;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}

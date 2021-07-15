@@ -1,6 +1,7 @@
 import json
 import requests
 
+
 class KV:
     def init_app(self, app) -> None:
         self.account = app.config["KV_ACCOUNT_IDENTIFIER"]
@@ -32,5 +33,6 @@ class KV:
         url = self.base_url + key
         r = requests.delete(url, headers=self.headers)
         return r.json()["success"]
+
 
 kv = KV()
