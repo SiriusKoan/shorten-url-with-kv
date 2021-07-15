@@ -1,5 +1,6 @@
 from flask import Flask
 from .config import configs
+from .KV import kv
 from .db import db
 from .user_helper import login_manager
 
@@ -9,6 +10,7 @@ def create_app(env):
     app.config.from_object(configs[env])
 
     login_manager.init_app(app)
+    kv.init_app(app)
     db.init_app(app)
 
     from .main import main_bp

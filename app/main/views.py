@@ -3,6 +3,7 @@ from flask_login import current_user
 from . import main_bp
 from ..db.helper import add_short_url, db_init, get_redirect_url
 from ..forms import ShortUrlForm
+from ..KV import kv
 
 
 @main_bp.before_app_first_request
@@ -21,6 +22,7 @@ def index_page():
             new = form.new.data
             user_id = current_user.id if current_user.is_active else 1
             if add_short_url(user_id, old, new):
+                kv.write(old, new)
                 flash("Successfully add this record.", category="success")
             else:
                 flash("The url has been used.", category="alert")
@@ -34,7 +36,7 @@ def index_page():
 
 @main_bp.route("/<string:url>", methods=["GET"])
 def redirect_page(url):
-    if old := get_redirect_url(url):
+    if old := kv.read(url):
         return redirect(old)
     else:
         abort(404)

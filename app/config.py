@@ -1,10 +1,15 @@
-from os import urandom
+from os import urandom, getenv
 
 
 class Config:
     SECRET_KEY = "cyt8745ynt98x34"
     # SQLAlchemy
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # KV
+    KV_ACCOUNT_IDENTIFIER = getenv("KV_ACCOUNT_IDENTIFIER")
+    KV_NAMESPACE_IDENTIFIER = getenv("KV_NAMESPACE_IDENTIFIER")
+    EMAIL = getenv("EMAIL")
+    X_AUTH_KEY = getenv("X_AUTH_KEY")
 
 
 class DevelopmentConfig(Config):
