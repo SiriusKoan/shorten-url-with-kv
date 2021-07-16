@@ -38,6 +38,10 @@ input[type="submit"]:hover {
     opacity: 0.8;
 }
 
+input[type="date"] {
+    margin: 5px 10px 5px 10px;
+}
+
 select {
     background-color: white;
     height: 25px;

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div>
+    {% if records %}
+    <table>
+        <thead>
+            <tr>
+                {% for key in records[0].keys() %}
+                <th>{{ key }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                {% for data in record.values() %}
+                <td>{{ data }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No records</p>
+    {% endif %}
+    <div>
+        <form action="/dashboard" method="post">
+            {{ form.csrf_token }}
+            <div class="field">
+                {{ form.start }}
+            </div>
+            <div class="field">
+                {{ form.end }}
+            </div>
+            <div class="field">
+                {{ form.submit }}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

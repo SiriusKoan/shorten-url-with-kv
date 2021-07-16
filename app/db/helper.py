@@ -49,3 +49,38 @@ def add_user(username, password, email, is_admin=False):
         db.session.commit()
         return True
     return False
+
+
+def url_to_dict(url_objects: list):
+    li = []
+    for url in url_objects:
+        d = dict()
+        d["user_id"] = url.user_id
+        d["old"] = url.old
+        d["new"] = url.new
+        d["use"] = url.use
+        d["create_by"] = url.create_by
+        d["created_time"] = url.created_time.strftime("%Y-%m-%d %H:%M:%S")
+        li.append(d)
+    return li
+
+
+def user_to_dict(user_objects: list):
+    li = []
+    for user in user_objects:
+        d = dict()
+        d["id"] = user.id
+        d["username"] = user.username
+        d["email"] = user.email
+        d["is_admin"] = user.is_admin
+        d["verify_code"] = user.verify_code
+        d["api_key"] = user.api_key
+        d["register_time"] = user.register_time
+        li.append(d)
+    return li
+
+
+def render_user_record(user_id):
+    records = urls.query.filter_by(user_id=user_id).all()
+    records = url_to_dict(records)
+    return records

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField
-from wtforms.fields.html5 import EmailField
+from wtforms.fields.html5 import EmailField, DateField
 from wtforms.validators import DataRequired, Regexp, Length, EqualTo
 
 
@@ -73,3 +73,8 @@ class RegisterForm(FlaskForm):
         "Email", validators=[DataRequired()], render_kw={"placeholder": "Email"}
     )
     submit = SubmitField("Register")
+
+class DashboardFilterForm(FlaskForm):
+    start = DateField("start", format='%Y-%m-%d', validators=[DataRequired()])
+    end = DateField("end", validators=[DataRequired()])
+    submit = SubmitField("Submit")
