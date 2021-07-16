@@ -3,16 +3,19 @@
 {% block title %}Shorten URL{% endblock %}
 
 {% block content %}
-<form action="/" method="post">
-    {{ form.csrf_token }}
-    <div class="field">
-        {{ form.old }}
-    </div>
-    <div class="field">
-        {{ form.new }}
-    </div>
-    <div class="field">
-        {{ form.submit }}
-    </div>
-</form>
+<div class="center-container">
+    <h1>Shorten URL</h1>
+    <form action="/" method="post">
+        {{ form.csrf_token }}
+        <div class="field">
+            {{ form.old }}
+        </div>
+        <div class="field">
+            {{ form.new }}
+        </div>
+        <div class="field">
+            {{ form.submit }}
+        </div>
+    </form>
+</div>
 {% endblock %}

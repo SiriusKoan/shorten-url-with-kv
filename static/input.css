@@ -1,12 +1,14 @@
 input[type="text"], input[type="email"], input[type="password"], input[type="number"] {
     margin: 5px 10px 5px 10px;
+    padding-left: 10px;
     font-family: 'Noto Sans TC', sans-serif;
     background: #FFFFFF;
     color: black;
     border: 1px solid #d1d1d1;
     border-radius: 5px;
     min-width: 0;
-    height: 20px;
+    height: 25px;
+    width: 250px;
     outline: none;
     -webkit-transition: .18s ease-out;
     -moz-transition: .18s ease-out;
@@ -26,9 +28,10 @@ input[type="text"]:disabled, input[type="email"]:disabled, input[type="password"
 input[type="submit"] {
     font-family: 'Noto Sans TC', sans-serif;
     min-width: 70px;
-    height: 30px;
+    height: 35px;
     border: 1px solid #d1d1d1;
     border-radius: 10px;
+    margin: 5px 10px 5px 10px;
 }
 
 input[type="submit"]:hover {

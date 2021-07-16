@@ -7,6 +7,10 @@ nav {
     width: 100vw;
 }
 
+nav span:first-child {
+    margin-left: 6px;
+}
+
 nav span a {
     margin: 9px 6px 9px 6px;
     text-decoration: none;
