@@ -1,7 +1,7 @@
 from flask import request, render_template, redirect, url_for, flash, abort
 from flask_login import current_user
 from . import main_bp
-from ..db.helper import add_short_url, db_init, get_redirect_url
+from ..db.helper import add_short_url, db_init, add_use
 from ..forms import ShortUrlForm
 from ..KV import kv
 
@@ -37,6 +37,7 @@ def index_page():
 @main_bp.route("/<string:url>", methods=["GET"])
 def redirect_page(url):
     if old := kv.read(url):
+        add_use(url)
         return redirect(old)
     else:
         abort(404)

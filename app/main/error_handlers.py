@@ -1,3 +1,4 @@
+from flask import redirect, url_for
 from . import main_bp
 
 
@@ -8,7 +9,7 @@ def not_found_handler(e):
 
 @main_bp.app_errorhandler(401)
 def unauthorized_handler(e):
-    return "", 401
+    return redirect(url_for("user.login_page"))
 
 
 @main_bp.app_errorhandler(403)

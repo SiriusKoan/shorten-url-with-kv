@@ -21,6 +21,12 @@ def get_redirect_url(new):
         return False
 
 
+def add_use(url):
+    url = urls.query.filter_by(new=url).first()
+    url.use += 1
+    db.session.commit()
+
+
 def add_short_url(user_id, old, new):
     if urls.query.filter_by(new=new).first():
         return False
@@ -80,7 +86,19 @@ def user_to_dict(user_objects: list):
     return li
 
 
-def render_user_record(user_id):
-    records = urls.query.filter_by(user_id=user_id).all()
-    records = url_to_dict(records)
+def render_user_record(filter=None):
+    records = urls.query
+    if filter:
+        user_id = filter.get("user_id", None)
+        if user_id:
+            records = records.filter_by(user_id=user_id)
+
+        time = filter.get("time", None)
+        if time:
+            time = time.split(";")
+            start, end = time[0], time[1]
+            records = records.filter(urls.created_time >= start).filter(
+                urls.created_time <= end
+            )
+    records = url_to_dict(records.all())
     return records

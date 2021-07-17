@@ -2,6 +2,7 @@ import unittest
 from flask import url_for
 from app import create_app
 from tests.helper import TestModel, generate_test_data
+from app.KV import kv
 
 
 class IndexPageTest(TestModel):
@@ -46,10 +47,14 @@ class RedirectPageTest(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
         generate_test_data()
+        kv.write("https://google.com", "test1")
+        kv.write("https://github.com", "gh")
         self.route_ok = "/test1"
         self.route_not_found = "/wrong"
 
     def tearDown(self) -> None:
+        kv.delete("test1")
+        kv.delete("gh")
         if self.app_context is not None:
             self.app_context.pop()
 
