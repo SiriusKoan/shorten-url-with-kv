@@ -2,8 +2,8 @@ import datetime
 from flask import request, render_template, flash, redirect, url_for, make_response
 from flask_login import current_user, login_required
 from . import user_bp
-from ..db.helper import render_user_record
-from ..forms import DashboardFilterForm
+from ..db.helper import render_user_record, render_user_data, update_user_data, check_email_duplicate
+from ..forms import DashboardFilterForm, UserSettingForm
 
 
 @user_bp.route("/dashboard", methods=["GET", "POST"])
@@ -40,8 +40,25 @@ def dashboard_page():
 
 
 @user_bp.route("/setting", methods=["GET", "POST"])
+@login_required
 def setting_page():
+    data = render_user_data(current_user.id)
+    form = UserSettingForm(email=data["email"])
     if request.method == "GET":
-        return ""
+        return render_template("user_setting.html", data=data, form=form)
     if request.method == "POST":
-        return ""
+        if form.validate_on_submit():
+            password = form.password.data
+            email = form.email.data
+            if check_email_duplicate(current_user.id, email):
+                if update_user_data(current_user.id, password, email):
+                    flash("OK.", category="success")
+                else:
+                    flash("Unknown error.", category="alert")
+            else:
+                flash("The email has been used.", category="alert")
+        else:
+            for _, errors in form.errors.items():
+                for error in errors:
+                    flash(error, category="alert")
+        return redirect(url_for("user.setting_page"))

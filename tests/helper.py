@@ -49,7 +49,9 @@ def generate_test_data():
     db.create_all()
     # users
     user = Users("user", "user", "user@user.com")
+    user2 = Users("user2", "user2", "user2@user.com")
     db.session.add(user)
+    db.session.add(user2)
 
     # urls
     url1 = urls(1, "https://google.com", "test1")

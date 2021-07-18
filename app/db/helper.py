@@ -1,3 +1,4 @@
+from werkzeug.security import generate_password_hash
 from . import db
 from .models import Users, urls
 from ..user_helper import User
@@ -102,3 +103,32 @@ def render_user_record(filter=None):
             )
     records = url_to_dict(records.all())
     return records
+
+def render_user_data(user_id):
+    if user := Users.query.filter_by(id=user_id).first():
+        return user_to_dict([user])[0]
+    else:
+        return False
+
+def check_email_duplicate(user_id, email):
+    # if the email is not duplicate, return False
+    user_id = Users.query.filter_by(id=user_id).first()
+    user_email = Users.query.filter_by(email=email).first()
+    if user_email:
+        if user_id == user_email:
+            return True
+        else:
+            return False
+    return True
+
+
+def update_user_data(user_id, password=None, email=None):
+    if user := Users.query.filter_by(id=user_id):
+        if password:
+            user.update({"password": generate_password_hash(password)})
+        if email:
+            user.update({"email": email})
+        db.session.commit()
+        return True
+    else:
+        return False

@@ -125,8 +125,8 @@ class SettingPageTest(TestModel):
         self.route = url_for("user.setting_page")
         self.data_ok = {"email": "user@a.a"}
         self.data_bad_too_short_password = {"email": "user@a.a", "password": "short"}
-        self.data_bad_empty_field = {}
-        self.data_bad_duplicate_email = {"email": "user@user.com"}
+        self.data_bad_empty_field = {"email": ""}
+        self.data_bad_duplicate_email = {"email": "user2@user.com"}
 
     def test_get_with_no_auth(self):
         res = self.get()

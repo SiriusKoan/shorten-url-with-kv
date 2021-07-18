@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField
 from wtforms.fields.html5 import EmailField, DateField
-from wtforms.validators import DataRequired, Regexp, Length, EqualTo
+from wtforms.validators import DataRequired, Regexp, Length, EqualTo, ValidationError
 
 
 class ShortUrlForm(FlaskForm):
@@ -74,7 +74,26 @@ class RegisterForm(FlaskForm):
     )
     submit = SubmitField("Register")
 
+
 class DashboardFilterForm(FlaskForm):
-    start = DateField("start", format='%Y-%m-%d', validators=[DataRequired()])
+    start = DateField("start", format="%Y-%m-%d", validators=[DataRequired()])
     end = DateField("end", validators=[DataRequired()])
     submit = SubmitField("Submit")
+
+
+class UserSettingForm(FlaskForm):
+    password = PasswordField(
+        "Password",
+        render_kw={"placeholder": "Password"},
+    )
+    email = EmailField(
+        "Email", validators=[DataRequired()], render_kw={"placeholder": "Email"}
+    )
+    submit = SubmitField("Update")
+
+    def validate_password(self, field):
+        if type(field.data) is str:
+            if field.data != "" and len(field.data) < 6:
+                raise ValidationError("The password must contain at least 6 characters.")
+        else:
+            raise ValidationError("Invalid.")
