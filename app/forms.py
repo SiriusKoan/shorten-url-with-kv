@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField
-from wtforms.fields.html5 import EmailField, DateField
-from wtforms.validators import DataRequired, Regexp, Length, EqualTo, ValidationError
+from wtforms.fields.html5 import EmailField, DateField, IntegerField
+from wtforms.validators import DataRequired, Regexp, Length, EqualTo, ValidationError, Optional
 
 
 class ShortUrlForm(FlaskForm):
@@ -81,6 +81,25 @@ class DashboardFilterForm(FlaskForm):
     submit = SubmitField("Submit")
 
 
+class AdminDashboardFilter(FlaskForm):
+    start = DateField("start", format="%Y-%m-%d", validators=[Optional()])
+    end = DateField("end", format="%Y-%m-%d", validators=[Optional()])
+    user_id = IntegerField("", render_kw={"placeholder": "User ID"}, validators=[Optional()])
+    submit = SubmitField("Submit")
+
+    def validate_start(self, field):
+        if (bool(field.data) ^ bool(self.end.data)):
+            raise ValidationError("Start and end date should be filled together.")
+    
+    def validate_user_id(self, field):
+        if field.data == None:
+            return
+        if not (type(field.data) is int):
+            raise ValidationError("Only integer is allowed.")
+        if field.data < 1:
+            raise ValidationError("The user id should be at least 1.")
+
+
 class UserSettingForm(FlaskForm):
     password = PasswordField(
         "Password",
@@ -94,6 +113,8 @@ class UserSettingForm(FlaskForm):
     def validate_password(self, field):
         if type(field.data) is str:
             if field.data != "" and len(field.data) < 6:
-                raise ValidationError("The password must contain at least 6 characters.")
+                raise ValidationError(
+                    "The password must contain at least 6 characters."
+                )
         else:
             raise ValidationError("Invalid.")

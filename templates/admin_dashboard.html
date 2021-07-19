@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}Admin Dashboard{% endblock %}
 
 {% block content %}
 <div>
@@ -27,7 +27,7 @@
     <p>No records</p>
     {% endif %}
     <div>
-        <form action="/dashboard" method="post">
+        <form action="/admin_dashboard" method="post">
             {{ form.csrf_token }}
             <div class="field">
                 {{ form.start }}
@@ -36,6 +36,9 @@
             <div class="field">
                 {{ form.end }}
                 <button onclick="end.value=''">&times;</button>
+            </div>
+            <div class="field">
+                {{ form.user_id}}
             </div>
             <div class="field">
                 {{ form.submit }}

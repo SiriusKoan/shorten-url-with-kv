@@ -30,3 +30,9 @@ tr:hover {
     align-items: center;
     min-height: 90vh;
 }
+
+.field {
+    display: flex;
+    min-height: 40px;
+    align-items: center;
+}

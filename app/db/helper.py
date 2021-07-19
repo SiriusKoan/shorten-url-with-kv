@@ -104,11 +104,13 @@ def render_user_record(filter=None):
     records = url_to_dict(records.all())
     return records
 
+
 def render_user_data(user_id):
     if user := Users.query.filter_by(id=user_id).first():
         return user_to_dict([user])[0]
     else:
         return False
+
 
 def check_email_duplicate(user_id, email):
     # if the email is not duplicate, return False

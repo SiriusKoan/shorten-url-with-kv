@@ -2,7 +2,12 @@ import datetime
 from flask import request, render_template, flash, redirect, url_for, make_response
 from flask_login import current_user, login_required
 from . import user_bp
-from ..db.helper import render_user_record, render_user_data, update_user_data, check_email_duplicate
+from ..db.helper import (
+    render_user_record,
+    render_user_data,
+    update_user_data,
+    check_email_duplicate,
+)
 from ..forms import DashboardFilterForm, UserSettingForm
 
 
@@ -14,7 +19,9 @@ def dashboard_page():
         filter["time"] = time
         time = time.split(";")
         start = datetime.datetime.strptime(time[0], "%Y-%m-%d")
-        end = datetime.datetime.strptime(time[1], "%Y-%m-%d") - datetime.timedelta(days=1)
+        end = datetime.datetime.strptime(time[1], "%Y-%m-%d") - datetime.timedelta(
+            days=1
+        )
         form = DashboardFilterForm(start=start, end=end)
     else:
         form = DashboardFilterForm()
