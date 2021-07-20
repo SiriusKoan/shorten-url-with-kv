@@ -27,25 +27,25 @@ class ManageUserPageTest(TestModel):
         super().setUp()
         self.route = url_for("admin.manage_user_page")
         self.data_ok = {
-            "username": "user2",
+            "username": "user3",
             "password": "password",
-            "email": "user2@a.a",
+            "email": "user3@a.a",
             "is_admin": False,
         }
         self.data_bad_too_short_password = {
-            "username": "user2",
+            "username": "user3",
             "password": "short",
-            "email": "user2@a.a",
+            "email": "user3@a.a",
             "is_admin": False,
         }
-        self.data_bad_empty_field = {"username": "user2"}
+        self.data_bad_empty_field = {"username": "user3"}
         self.data_bad_username_duplicate = {
             "username": "user",
             "password": "useruser",
             "email": "user@a.a",
         }
         self.data_bad_email_duplicate = {
-            "username": "user2",
+            "username": "user3",
             "password": "useruser",
             "email": "user@user.com",
         }
@@ -77,17 +77,17 @@ class ManageUserPageTest(TestModel):
     def test_post_bad_empty_field(self):
         res = self.post(login="admin", data=self.data_bad_empty_field)
         self.assertEqual(res.status_code, 200)
-        self.assertIn(b"The field is required.", res.data)
+        self.assertIn(b"This field is required.", res.data)
 
     def test_post_bad_username_duplicate(self):
         res = self.post(login="admin", data=self.data_bad_username_duplicate)
         self.assertEqual(res.status_code, 200)
-        self.assertIn(b"The username has been used.", res.data)
+        self.assertIn(b"The username or the email has been used.", res.data)
 
     def test_post_bad_email_duplicate(self):
         res = self.post(login="admin", data=self.data_bad_email_duplicate)
         self.assertEqual(res.status_code, 200)
-        self.assertIn(b"The email has been used.", res.data)
+        self.assertIn(b"The username or the email has been used.", res.data)
 
 
 class ManageUserBackend(TestModel):

@@ -11,7 +11,7 @@
         <div class="field"><b>Password:</b> {{ form.password }}</div>
         <div class="field"><b>Email:</b> {{ form.email }}</div>
         <div class="field"><b>API key:</b> {{ data["api_key"] }}</div>
-        <div class="field"><b>Register Time:</b> {{ data["register_time"].strftime("%Y-%m-%d") }}</div>
+        <div class="field"><b>Register Time:</b> {{ data["register_time"] }}</div>
         <div class="field">{{ form.submit }}</div>
     </form>
 </div>

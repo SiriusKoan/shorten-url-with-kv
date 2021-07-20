@@ -82,7 +82,7 @@ def user_to_dict(user_objects: list):
         d["is_admin"] = user.is_admin
         d["verify_code"] = user.verify_code
         d["api_key"] = user.api_key
-        d["register_time"] = user.register_time
+        d["register_time"] = user.register_time.strftime("%Y-%m-%d %H:%M:%S")
         li.append(d)
     return li
 
@@ -110,6 +110,10 @@ def render_user_data(user_id):
         return user_to_dict([user])[0]
     else:
         return False
+
+def render_users_data():
+    users = Users.query.all()
+    return user_to_dict(users)
 
 
 def check_email_duplicate(user_id, email):

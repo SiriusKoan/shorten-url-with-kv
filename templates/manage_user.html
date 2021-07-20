@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Users{% endblock %}
+
+{% block content %}
+<div>
+    <table>
+        {% if data %}
+        <thead>
+            <tr>
+                {% for key in data[0].keys() %}
+                <th>{{ key }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in data %}
+            <tr>
+                {% for value in user.values() %}
+                <td>{{ value }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+        {% else %}
+        <p style="margin-left: 30px;">No records</p>
+        {% endif %}
+    </table>
+</div>
+<div>
+    <form action="/manage_user" method="post">
+        {{ form.csrf_token }}
+        <div class="field">
+            {{ form.username }}
+        </div>
+        <div class="field">
+            {{ form.password }}
+        </div>
+        <div class="field">
+            {{ form.email }}
+        </div>
+        <div class="field">
+            {{ form.is_admin }}
+            {{ form.is_admin.label }}
+        </div>
+        <div class="field">
+            {{ form.submit }}
+        </div>
+    </form>
+</div>
+{% endblock %}

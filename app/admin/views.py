@@ -2,8 +2,8 @@ import datetime
 from flask import request, make_response, redirect, url_for, render_template, flash
 from flask_login import login_required
 from . import admin_bp
-from ..db.helper import render_user_record
-from ..forms import AdminDashboardFilter
+from ..db.helper import add_user, render_user_record, render_users_data
+from ..forms import AdminDashboardFilter, AddUserForm
 from ..user_helper import admin_required
 
 
@@ -52,12 +52,28 @@ def dashboard_page():
 
 
 @admin_bp.route("/manage_user", methods=["GET", "POST"])
+@admin_required
+@login_required
 def manage_user_page():
+    form = AddUserForm()
     if request.method == "GET":
-        return ""
+        data = render_users_data()
+        return render_template("manage_user.html", form=form, data=data)
     if request.method == "POST":
-        # add user
-        return ""
+        if form.validate_on_submit():
+            username = form.username.data
+            password = form.password.data
+            email = form.email.data
+            is_admin = form.is_admin.data
+            if add_user(username, password, email, is_admin):
+                flash("Add user successfully.", category="success")
+            else:
+                flash("The username or the email has been used.", category="alert")
+        else:
+            for _, errors in form.errors.items():
+                for error in errors:
+                    flash(error, category="alert")
+        return redirect(url_for("admin.manage_user_page"))
 
 
 @admin_bp.route("/manage_user_backend", methods=["PATCH", "DELETE"])

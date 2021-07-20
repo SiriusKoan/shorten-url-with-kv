@@ -42,6 +42,10 @@ input[type="date"] {
     margin: 5px 10px 5px 10px;
 }
 
+input[type="checkbox"] {
+    margin: 5px 10px 5px 12px;
+}
+
 select {
     background-color: white;
     height: 25px;

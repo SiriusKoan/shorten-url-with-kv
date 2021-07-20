@@ -1,7 +1,15 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField
+from wtforms.fields.core import BooleanField
 from wtforms.fields.html5 import EmailField, DateField, IntegerField
-from wtforms.validators import DataRequired, Regexp, Length, EqualTo, ValidationError, Optional
+from wtforms.validators import (
+    DataRequired,
+    Regexp,
+    Length,
+    EqualTo,
+    ValidationError,
+    Optional,
+)
 
 
 class ShortUrlForm(FlaskForm):
@@ -84,13 +92,15 @@ class DashboardFilterForm(FlaskForm):
 class AdminDashboardFilter(FlaskForm):
     start = DateField("start", format="%Y-%m-%d", validators=[Optional()])
     end = DateField("end", format="%Y-%m-%d", validators=[Optional()])
-    user_id = IntegerField("", render_kw={"placeholder": "User ID"}, validators=[Optional()])
+    user_id = IntegerField(
+        "", render_kw={"placeholder": "User ID"}, validators=[Optional()]
+    )
     submit = SubmitField("Submit")
 
     def validate_start(self, field):
-        if (bool(field.data) ^ bool(self.end.data)):
+        if bool(field.data) ^ bool(self.end.data):
             raise ValidationError("Start and end date should be filled together.")
-    
+
     def validate_user_id(self, field):
         if field.data == None:
             return
@@ -118,3 +128,31 @@ class UserSettingForm(FlaskForm):
                 )
         else:
             raise ValidationError("Invalid.")
+
+
+class AddUserForm(FlaskForm):
+    username = StringField(
+        "Username",
+        validators=[
+            DataRequired(),
+            Length(min=4, max=30, message="The name should be 4 to 30 letters long."),
+            Regexp(
+                "[a-zA-Z0-9_]+",
+                message="Only letters, numbers and underscore are allowed in username.",
+            ),
+        ],
+        render_kw={"placeholder": "Username"},
+    )
+    password = PasswordField(
+        "Password",
+        validators=[
+            DataRequired(),
+            Length(min=6, message="The password must contain at least 6 characters."),
+        ],
+        render_kw={"placeholder": "Password"},
+    )
+    email = EmailField(
+        "Email", validators=[DataRequired()], render_kw={"placeholder": "Email"}
+    )
+    is_admin = BooleanField("The user is an admin")
+    submit = SubmitField("Add")
