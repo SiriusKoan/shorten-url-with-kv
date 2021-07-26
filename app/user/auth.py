@@ -17,6 +17,9 @@ def login_page():
         if request.method == "POST":
             if form.validate_on_submit():
                 username = form.username.data
+                if username == "anonymous":
+                    flash("You cannot login as anonymous.")
+                    return redirect(url_for("user.login_page"))
                 password = form.password.data
                 if user := login_auth(username, password):
                     login_user(user)

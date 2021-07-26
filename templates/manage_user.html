@@ -2,6 +2,15 @@
 
 {% block title %}Manage Users{% endblock %}
 
+{% block extra_import %}
+<script src="/static/users.js"></script>
+<style>
+    table input {
+        max-width: 150px;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <div>
     <table>
@@ -11,14 +20,25 @@
                 {% for key in data[0].keys() %}
                 <th>{{ key }}</th>
                 {% endfor %}
+                <th>password</th>
+                <th>Operation</th>
             </tr>
         </thead>
         <tbody>
             {% for user in data %}
             <tr>
-                {% for value in user.values() %}
-                <td>{{ value }}</td>
-                {% endfor %}
+                <td>{{ user['id'] }}</td>
+                <td><input type="text" value="{{ user['username'] }}" required></td>
+                <td><input type="email" value="{{ user['email'] }}" required></td>
+                <td><input type="checkbox" {% if user['is_admin'] %} checked {% endif %}></td>
+                <td><input type="text" value="{{ user['verify_code'] }}" required></td>
+                <td><input type="text" value="{{ user['api_key'] }}" required></td>
+                <td>{{ user['register_time'] }}</td>
+                <td><input type="password"></td>
+                <td>
+                    <button class="update" onclick="send_update(this);">Update</button>
+                    <button class="remove" onclick="send_remove({{ user['id'] }});">Delete</button>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
