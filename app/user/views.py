@@ -57,13 +57,12 @@ def setting_page():
         if form.validate_on_submit():
             password = form.password.data
             email = form.email.data
-            if check_email_duplicate(current_user.id, email):
-                if update_user_data(current_user.id, password, email):
-                    flash("OK.", category="success")
-                else:
-                    flash("Unknown error.", category="alert")
+            if (
+                msg := update_user_data(current_user.id, password=password, email=email)
+            ) == True:
+                flash("OK.", category="success")
             else:
-                flash("The email has been used.", category="alert")
+                flash(msg, category="alert")
         else:
             for _, errors in form.errors.items():
                 for error in errors:

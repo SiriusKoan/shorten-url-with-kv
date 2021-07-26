@@ -2,7 +2,7 @@ import datetime
 from flask import request, make_response, redirect, url_for, render_template, flash
 from flask_login import login_required
 from . import admin_bp
-from ..db.helper import add_user, render_user_record, render_users_data
+from ..db.helper import add_user, render_user_record, render_users_data, delete_user, update_user_data
 from ..forms import AdminDashboardFilter, AddUserForm
 from ..user_helper import admin_required
 
@@ -77,8 +77,21 @@ def manage_user_page():
 
 
 @admin_bp.route("/manage_user_backend", methods=["PATCH", "DELETE"])
+@admin_required
+@login_required
 def manage_user_backend():
     if request.method == "PATCH":
-        return ""
+        data = request.get_json(force=True)
+        user_id = data.pop("user_id")
+        if (msg := update_user_data(user_id, **data)) == True:
+            return "T;OK."
+        else:
+            return "F;" + msg, 400
     if request.method == "DELETE":
-        return ""
+        data = request.get_json(force=True)
+        user_id = data["user_id"]
+        if (msg := delete_user(user_id)) == True:
+            return "T;OK."
+        else:
+            return "F;" + msg, 400
+

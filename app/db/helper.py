@@ -24,8 +24,9 @@ def get_redirect_url(new):
 
 def add_use(url):
     url = urls.query.filter_by(new=url).first()
-    url.use += 1
-    db.session.commit()
+    if url:
+        url.use += 1
+        db.session.commit()
 
 
 def add_short_url(user_id, old, new):
@@ -111,9 +112,22 @@ def render_user_data(user_id):
     else:
         return False
 
+
 def render_users_data():
     users = Users.query.all()
     return user_to_dict(users)
+
+
+def check_username_duplicate(user_id, username):
+    # if the username is not deuplicate, return False
+    user_id = Users.query.filter_by(id=user_id).first()
+    user_username = Users.query.filter_by(username=username).first()
+    if user_username:
+        if user_id == user_username:
+            return True
+        else:
+            return False
+    return True
 
 
 def check_email_duplicate(user_id, email):
@@ -128,13 +142,37 @@ def check_email_duplicate(user_id, email):
     return True
 
 
-def update_user_data(user_id, password=None, email=None):
-    if user := Users.query.filter_by(id=user_id):
-        if password:
-            user.update({"password": generate_password_hash(password)})
-        if email:
-            user.update({"email": email})
+def update_user_data(user_id, **kwargs):
+    filter = Users.query.filter_by(id=user_id)
+    if filter.first():
+        if kwargs.get("email", None):
+            if not check_email_duplicate(user_id, kwargs["email"]):
+                return "The email has been used."
+        if kwargs.get("username", None):
+            if not check_username_duplicate(user_id, kwargs["username"]):
+                return "The username has been used."
+        if kwargs.get("password", None):
+            if len(kwargs["password"]) < 6:
+                return "The password must contain at least 6 characters."
+        if kwargs.get("api_key", None):
+            if kwargs["api_key"] == "None":
+                kwargs["api_key"] = None
+        if kwargs.get("verify_code", None):
+            if kwargs["verify_code"] == "None":
+                kwargs["verify_code"] = None
+        if "password" in kwargs:
+            kwargs["password"] = generate_password_hash(kwargs["password"])
+        filter.update(kwargs)
         db.session.commit()
         return True
     else:
-        return False
+        return "The user does not exist."
+
+
+def delete_user(user_id):
+    if user := Users.query.filter_by(id=user_id).first():
+        urls.query.filter_by(user_id=user_id).update({"user_id": 1})
+        db.session.delete(user)
+        db.session.commit()
+        return True
+    return "The user does not exist."

@@ -54,9 +54,9 @@ def generate_test_data():
     db.session.add(user2)
 
     # urls
-    url1 = urls(1, "https://google.com", "test1")
+    url1 = urls(2, "https://google.com", "test1")
     db.session.add(url1)
-    url2 = urls(1, "https://github.com", "gh")
+    url2 = urls(2, "https://github.com", "gh")
     db.session.add(url2)
 
     db.session.commit()
