@@ -1,8 +1,10 @@
 from os import getenv
 import unittest
-from app import create_app
+from flask_migrate import Migrate
+from app import create_app, db
 
 app = create_app(getenv("FLASK_ENV"))
+migrate = Migrate(app, db)
 
 
 @app.shell_context_processor
