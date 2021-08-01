@@ -7,7 +7,7 @@ from app.db.models import Users, urls
 
 class TestModel(unittest.TestCase):
     def setUp(self) -> None:
-        self.app = create_app("test")
+        self.app = create_app("testing")
         self.client = self.app.test_client()
         self.app_context = self.app.app_context()
         self.app_context.push()
@@ -49,8 +49,8 @@ def generate_test_data():
     db.create_all()
     # users
     user = Users("user", "user", "user@user.com")
-    user2 = Users("user2", "user2", "user2@user.com")
     db.session.add(user)
+    user2 = Users("user2", "user2", "user2@user.com")
     db.session.add(user2)
 
     # urls

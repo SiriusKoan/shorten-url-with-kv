@@ -6,7 +6,6 @@ from ..db.helper import (
     render_user_record,
     render_user_data,
     update_user_data,
-    check_email_duplicate,
 )
 from ..forms import DashboardFilterForm, UserSettingForm
 

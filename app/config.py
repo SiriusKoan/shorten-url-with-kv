@@ -20,6 +20,7 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     ENV = "testing"
+    SERVER_NAME = "localhost"
     TESTING = True
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
@@ -32,7 +33,7 @@ class ProductionConfig(Config):
 
 
 configs = {
-    "dev": DevelopmentConfig,
-    "test": TestingConfig,
-    "prod": ProductionConfig,
+    "development": DevelopmentConfig,
+    "testing": TestingConfig,
+    "production": ProductionConfig,
 }

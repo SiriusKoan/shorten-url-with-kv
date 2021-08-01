@@ -5,7 +5,7 @@ from app import create_app
 
 class BasicTest(unittest.TestCase):
     def setUp(self) -> None:
-        self.app = create_app("test")
+        self.app = create_app("testing")
         self.client = self.app.test_client()
         self.app_context = self.app.test_request_context()
         self.app_context.push()

@@ -1,7 +1,5 @@
 requests
-Flask==1.1.2
-Flask-Script
+Flask
 Flask-SQLAlchemy
 Flask-WTF
 Flask-Login
-pygal

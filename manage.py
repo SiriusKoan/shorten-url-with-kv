@@ -1,21 +1,16 @@
 from os import getenv
 import unittest
-from flask_script import Manager
 from app import create_app
 
-app = create_app(getenv("ENV", "prod"))
-manager = Manager(app)
+app = create_app(getenv("FLASK_ENV"))
 
 
-@manager.shell
-def shell():
+@app.shell_context_processor
+def make_shell_context():
     return globals()
 
 
-@manager.command
+@app.cli.command()
 def test():
     tests = unittest.TestLoader().discover("tests")
     unittest.TextTestRunner(verbosity=2).run(tests)
-
-if __name__ == "__main__":
-    manager.run()
